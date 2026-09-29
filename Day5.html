@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML</title>
+</head>
+<body>
+    <h1>Megathon</h1>
+    <input type="text" id="name" placeholder="Enter your name">
+    <button onclick="sendName()">Send Name</button>
+    <button onclick="showName()">Click me</button>
+    <button onclick="getUsers()">LOAD users</button>
+    <button onclick="getUser()">Get User</button>
+    <div id="users"></div>
+    <p id="result"></p>
+    <p id="greeting"></p>
+    <script>
+        let users=[
+            {name:"shruthi",age:19},
+            {name:"aksh",age:19},
+            {name:"vasu",age:10}
+        ];
+        for (let user of users){
+            console.log(user.name);
+        }
+        function showName(){
+            let name=document.getElementById("name").value;
+            document.getElementById("result").innerText="Welcome to Megathon "+ name;
+
+        }
+    async function getUsers(){
+    try {
+        let response = await fetch("https://jsonplaceholder.typicode.com/users");
+
+        if (response.ok) {
+            let data = await response.json();
+
+            for (let user of data){
+                document.getElementById("users").innerHTML +=
+                    "<p>" + user.name + "</p>";
+            }
+        }
+        else {
+            document.getElementById("users").innerText =
+                "Failed to fetch users";
+        }
+    }
+    catch (error) {
+        document.getElementById("users").innerText =
+            "Something went wrong";
+    }
+}
+async function getUser(){
+    let response = await fetch("http://127.0.0.1:5000/user");
+    let data = await response.json();
+
+    document.getElementById("result").innerText =
+        "Name: " + data.name +
+        " | Age: " + data.age +
+        " | Branch: " + data.branch;
+}
+
+async function sendName(){
+    let name=document.getElementById("name").value;
+    let response=await fetch("http://127.0.0.1:5000/greet", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: name })
+    });
+    let data=await response.json();
+    console.log(data);
+    console.log(data.message);
+    document.getElementById("greeting").innerText=data.message;
+}
+async function sendIssue() {
+    let problem = document.getElementById("problem").value;
+
+    let response = await fetch("http://127.0.0.1:5000/issue", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            problem: problem
+        })
+    });
+
+    let data = await response.json();
+
+    document.getElementById("issueResult").innerText = data.message;
+}
+
+    </script>
+<h2>Issue Reporter</h2>
+<input type="text" id="problem" placeholder="Enter your issue">
+<button onclick="sendIssue()">Report Issue </button>
+<p id="issueResult"></p>
+</body>
+
+</html>

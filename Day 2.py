@@ -129,7 +129,7 @@ print("Factorial=",factorial) '''
 for i in range(1,11):
     print(n,"x",i,"=",n*i) '''
 
-sum=0
+'''sum=0
 largest=None
 smallest=None
 even=0
@@ -151,7 +151,7 @@ print("Smallest=",smallest)
 print("Sum=",sum)
 print("Average=",average)
 print("Even=",even)
-print("Odd",odd)
+print("Odd",odd)'''
 
 
 
